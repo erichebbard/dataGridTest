@@ -92,4 +92,4 @@
 </script>
 
 <span>Grid is here:</span>
-<Handsontable {data}, {columns}/>
+<Handsontable {data} {columns}/>

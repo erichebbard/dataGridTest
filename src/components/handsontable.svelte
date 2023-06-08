@@ -1,6 +1,6 @@
 <svelte:head>
 	<script src="node_modules/handsontable/dist/handsontable.full.min.js"
-					on:load={() => isScriptLoaded = true} />
+				on:load={() => isScriptLoaded = true} />
 	<link href="node_modules/handsontable/dist/handsontable.full.min.css" rel="stylesheet" media="screen" 
 				on:load={() => isStyleLoaded = true} />
 </svelte:head>
@@ -30,6 +30,5 @@
 	}
 </script>
 
-{#if isPageReady}
-	<div use:gridInit></div>
-{/if}
+
+<div use:gridInit></div>
