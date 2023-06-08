@@ -50,11 +50,13 @@
         title: 'Brand',
         type: 'text',
         data: 'brand',
+        renderer: 'negativeValueRenderer'
     },
     {
         title: 'Model',
         type: 'text',
         data: 'model',
+        renderer: 'negativeValueRenderer'
     },
     {
         title: 'Price',
@@ -63,6 +65,7 @@
         numericFormat: {
         pattern: '$ 0,0.00',
         culture: 'en-US',
+        renderer: 'priceRenderer'
         },
     },
     {
@@ -72,6 +75,7 @@
         dateFormat: 'MMM D, YYYY',
         correctFormat: true,
         className: 'htRight',
+        renderer: 'negativeValueRenderer'
     },
     {
         title: 'Time',
@@ -80,12 +84,14 @@
         timeFormat: 'hh:mm A',
         correctFormat: true,
         className: 'htRight',
+        renderer: 'negativeValueRenderer'
     },
     {
         title: 'In stock',
         type: 'checkbox',
         data: 'inStock',
         className: 'htCenter',
+        renderer: 'negativeValueRenderer'
     },
     ];
 
@@ -93,3 +99,7 @@
 
 <span>Grid is here:</span>
 <Handsontable {data} {columns}/>
+
+<br>
+<br>
+<div> any price below $100 will be highlighted</div>

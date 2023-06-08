@@ -14,7 +14,51 @@
 	let isPageReady = false;
 	$: isPageReady = isScriptLoaded && isStyleLoaded;
 
+    function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+        td.style.fontWeight = 'bold';
+        td.style.color = 'green';
+        td.style.background = '#CEC';
+    }
+
+    function priceRenderer(instance, td, row, col, prop, value, cellProperties) {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+
+        // if the row contains a negative number
+        if (parseFloat(value, 10) < 100) {
+            // add class 'make-me-red'
+            td.style.background = 'red';
+        }
+
+        console.log(parseFloat(value, 10))
+    }
+
+    function negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+
+        if (!value || value === '') {
+            td.style.background = '';
+
+        } else {
+            if (value === 'Gigabox') {
+            td.style.fontStyle = 'italic';
+            }
+
+            td.style.background = '';
+        }
+    }
+
+    // maps function to a lookup string
+    // Handsontable.renderers.registerRenderer('negativeValueRenderer', negativeValueRenderer);
+
 	function gridInit(node) {
+        
+        // maps function to a lookup string
+        // The registerRenderer method is used in the browser environment and may not be available during server-side rendering (SSR) or in non-browser environments where the navigator object is not defined.
+        // move the registration of the custom renderer inside the gridInit function, which will ensure it is executed in the browser environment. 
+        Handsontable.renderers.registerRenderer('negativeValueRenderer', negativeValueRenderer);
+        Handsontable.renderers.registerRenderer('priceRenderer', priceRenderer);
+
 		new Handsontable(node, {
             data:data,
             columns:columns,
@@ -24,10 +68,46 @@
             rowHeaders: true,
             colWidths: 100,
             columnSorting: true,
+            filters: true,
+            dropdownMenu: true,
             manualColumnResize: true,
-			licenseKey: "non-commercial-and-evaluation"
-		});
-	}
+			licenseKey: "non-commercial-and-evaluation",
+
+            afterSelection(row, col, row2, col2) {
+                const meta = this.getCellMeta(row2, col2);
+
+                if (meta.readOnly) {
+                this.updateSettings({fillHandle: false});
+
+                } else {
+                this.updateSettings({fillHandle: true});
+                }
+            },
+            cells(row, col) {
+                const cellProperties = {};
+                const data = this.instance.getData();
+
+                if (row === 0 || data[row] && data[row][col] === 'readOnly') {
+                cellProperties.readOnly = true; // make cell read-only if it is first row or the text reads 'readOnly'
+                }
+
+                // if (row === 0) {
+                // cellProperties.renderer = firstRowRenderer; // uses function directly
+
+                // }
+                // } else {
+                // cellProperties.renderer = 'priceRenderer'; // uses lookup map
+                // }
+
+                if (col === 2) {
+                    cellProperties.renderer = 'priceRenderer';
+                }
+
+                return cellProperties;
+            }
+        });
+    }
+
 </script>
 
 
