@@ -1,6 +1,6 @@
 
 <script>
-	import Handsontable from '/src/components/Handsontable.svelte'
+	import Handsontable from '/src/components/handsontable.svelte'
     
     let data = [
         {
