@@ -1,57 +1,73 @@
-<svelte:head>
-	<script src="node_modules/handsontable/dist/handsontable.full.min.js"
-				on:load={() => isScriptLoaded = true} />
-	<link href="node_modules/handsontable/dist/handsontable.full.min.css" rel="stylesheet" media="screen" 
-				on:load={() => isStyleLoaded = true} />
-</svelte:head>
 
 <script>
-	export let data;
+
+    import { onMount } from 'svelte';
+    import '/node_modules/handsontable/dist/handsontable.full.min.css'
+    
+    export let data;
     export let columns;
+    
+    let isScriptLoaded = false;
+    let isStyleLoaded = false;
+    let isPageReady = false;
+    $: isPageReady = isScriptLoaded && isStyleLoaded;
+    
+    let Handsontable;
 
-	let isScriptLoaded = false;
-	let isStyleLoaded = false;
-	let isPageReady = false;
-	$: isPageReady = isScriptLoaded && isStyleLoaded;
+    onMount(() => {
+        (async () => {
+            const module = await import('Handsontable');
+            Handsontable = module.default;
+            
+            isStyleLoaded = true;
+            isScriptLoaded = true
+        })();
+    });
 
+    // falsy check before doing anything against potentially undefined Handsontable
+    $: Handsontable && console.log(Handsontable);
+    
+    
     function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
         td.style.fontWeight = 'bold';
         td.style.color = 'green';
         td.style.background = '#CEC';
     }
-
+    
     function priceRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
-
+        
         // if the row contains a negative number
         if (parseFloat(value, 10) < 100) {
             // add class 'make-me-red'
             td.style.background = 'red';
         }
-
+        
         console.log(parseFloat(value, 10))
     }
-
+    
     function negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
-
+        
         if (!value || value === '') {
             td.style.background = '';
-
+            
         } else {
             if (value === 'Gigabox') {
-            td.style.fontStyle = 'italic';
+                td.style.fontStyle = 'italic';
             }
-
+            
             td.style.background = '';
         }
     }
-
+    
     // maps function to a lookup string
     // Handsontable.renderers.registerRenderer('negativeValueRenderer', negativeValueRenderer);
-
+    
 	function gridInit(node) {
+        
+        console.log("Good!")
         
         // maps function to a lookup string
         // The registerRenderer method is used in the browser environment and may not be available during server-side rendering (SSR) or in non-browser environments where the navigator object is not defined.
@@ -59,56 +75,67 @@
         Handsontable.renderers.registerRenderer('negativeValueRenderer', negativeValueRenderer);
         Handsontable.renderers.registerRenderer('priceRenderer', priceRenderer);
 
-		new Handsontable(node, {
-            data:data,
-            columns:columns,
-            width: '100%',
-            height: 'auto',
-            colHeaders: true,
-            rowHeaders: true,
-            colWidths: 100,
-            columnSorting: true,
-            filters: true,
-            dropdownMenu: true,
-            manualColumnResize: true,
-			licenseKey: "non-commercial-and-evaluation",
+        
+        try {
 
-            afterSelection(row, col, row2, col2) {
-                const meta = this.getCellMeta(row2, col2);
-
-                if (meta.readOnly) {
-                this.updateSettings({fillHandle: false});
-
-                } else {
-                this.updateSettings({fillHandle: true});
+            new Handsontable(node, {
+                data:data,
+                columns:columns,
+                width: '100%',
+                height: 'auto',
+                colHeaders: true,
+                rowHeaders: true,
+                colWidths: 100,
+                columnSorting: true,
+                filters: true,
+                dropdownMenu: true,
+                manualColumnResize: true,
+                licenseKey: "non-commercial-and-evaluation",
+    
+                afterSelection(row, col, row2, col2) {
+                    const meta = this.getCellMeta(row2, col2);
+    
+                    if (meta.readOnly) {
+                    this.updateSettings({fillHandle: false});
+    
+                    } else {
+                    this.updateSettings({fillHandle: true});
+                    }
+                },
+                cells(row, col) {
+                    const cellProperties = {};
+                    const data = this.instance.getData();
+    
+                    if (row === 0 || data[row] && data[row][col] === 'readOnly') {
+                    cellProperties.readOnly = true; // make cell read-only if it is first row or the text reads 'readOnly'
+                    }
+    
+                    // if (row === 0) {
+                    // cellProperties.renderer = firstRowRenderer; // uses function directly
+    
+                    // }
+                    // } else {
+                    // cellProperties.renderer = 'priceRenderer'; // uses lookup map
+                    // }
+    
+                    if (col === 2) {
+                        cellProperties.renderer = 'priceRenderer';
+                    }
+    
+                    return cellProperties;
                 }
-            },
-            cells(row, col) {
-                const cellProperties = {};
-                const data = this.instance.getData();
+            });
 
-                if (row === 0 || data[row] && data[row][col] === 'readOnly') {
-                cellProperties.readOnly = true; // make cell read-only if it is first row or the text reads 'readOnly'
-                }
-
-                // if (row === 0) {
-                // cellProperties.renderer = firstRowRenderer; // uses function directly
-
-                // }
-                // } else {
-                // cellProperties.renderer = 'priceRenderer'; // uses lookup map
-                // }
-
-                if (col === 2) {
-                    cellProperties.renderer = 'priceRenderer';
-                }
-
-                return cellProperties;
-            }
-        });
+        } catch (error) {
+            console.log('Handsontable initialization error:', error);
+        }
     }
 
 </script>
 
 
-<div use:gridInit></div>
+<!-- <div use:gridInit></div> -->
+
+{#if isPageReady}
+	<div use:gridInit></div>
+{/if}
