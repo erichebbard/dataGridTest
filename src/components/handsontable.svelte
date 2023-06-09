@@ -16,11 +16,11 @@
 
     onMount(() => {
         (async () => {
-            const module = await import('Handsontable');
+            const module = await import('handsontable');
             Handsontable = module.default;
             
             isStyleLoaded = true;
-            isScriptLoaded = true
+            isScriptLoaded = true;
         })();
     });
 
