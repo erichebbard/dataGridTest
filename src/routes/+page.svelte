@@ -112,4 +112,4 @@
 
 <br>
 <br>
-<div> any price below $100 will be highlighted</div>
+<div> production days that are producing over the tool capacity will be highlighted red </div>
