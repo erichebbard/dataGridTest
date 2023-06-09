@@ -6,7 +6,7 @@
     
     export let data;
     export let columns;
-    
+    console.log(data);
     let isScriptLoaded = false;
     let isStyleLoaded = false;
     let isPageReady = false;
@@ -24,6 +24,8 @@
         })();
     });
 
+ 
+
     // falsy check before doing anything against potentially undefined Handsontable
     $: Handsontable && console.log(Handsontable);
     
@@ -38,13 +40,17 @@
     function priceRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
         
+        let toolQuantity = data[row].toolQty;
+        console.log(toolQuantity);
+        
         // if the row contains a negative number
-        if (parseFloat(value, 10) < 100) {
+        if (parseFloat(value, 10) > toolQuantity) {
+
             // add class 'make-me-red'
             td.style.background = 'red';
         }
         
-        console.log(parseFloat(value, 10))
+        // console.log(parseFloat(value, 10))
     }
     
     function negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -84,7 +90,7 @@
                 width: '100%',
                 height: 'auto',
                 colHeaders: true,
-                rowHeaders: true,
+                rowHeaders: false,
                 colWidths: 100,
                 columnSorting: true,
                 filters: true,
@@ -118,7 +124,7 @@
                     // cellProperties.renderer = 'priceRenderer'; // uses lookup map
                     // }
     
-                    if (col === 2) {
+                    if (col > 5) {
                         cellProperties.renderer = 'priceRenderer';
                     }
     

@@ -4,92 +4,102 @@
     
     let data = [
         {
-            brand: 'Jetpulse',
-            model: 'Racing Socks',
-            price: 30,
-            sellDate: 'Oct 11, 2023',
-            sellTime: '01:23 AM',
-            inStock: false,
+            type: 'Sales Order Demand',
+            platform: '737',
+            rowLabels: '213A3210-7',
+            luLine: "LU280",
+            toolQty: 2,
+            safetyStock: 20,
+            c06232022: 2,
+            c06242022: 0,
+            c06272022: 3,
         },
         {
-            brand: 'Gigabox',
-            model: 'HL Mountain Frame',
-            price: 1890.9,
-            sellDate: 'May 3, 2023',
-            sellTime: '11:27 AM',
-            inStock: false,
+            type: 'Current MPS',
+            platform: '737',
+            rowLabels: '213A3210-7',
+            luLine: "LU280",
+            toolQty: 2,
+            safetyStock: 20,
+            c06232022: 2,
+            c06242022: 2,
+            c06272022: 1,
         },
         {
-            brand: 'Camido',
-            model: 'Cycling Cap',
-            price: 130.1,
-            sellDate: 'Mar 27, 2023',
-            sellTime: '03:17 AM',
-            inStock: true,
-        },
-        {
-            brand: 'Chatterpoint',
-            model: 'Road Tire Tube',
-            price: 59,
-            sellDate: 'Aug 28, 2023',
-            sellTime: '08:01 AM',
-            inStock: true,
-        },
-        {
-            brand: 'Eidel',
-            model: 'HL Road Tire',
-            price: 279.99,
-            sellDate: 'Oct 2, 2023',
-            sellTime: '13:23 AM',
-            inStock: true,
+            type: 'NEW MPS Suggestion',
+            platform: '737',
+            rowLabels: '213A3210-8',
+            luLine: "LU280",
+            toolQty: 2,
+            safetyStock: 20,
+            c06232022: 2,
+            c06242022: 0,
+            c06272022: 3,
         },
     ];
 
     let columns = [
     {
-        title: 'Brand',
+        title: ' ',
         type: 'text',
-        data: 'brand',
+        data: 'type',
         renderer: 'negativeValueRenderer'
     },
     {
-        title: 'Model',
+        title: 'Platform',
         type: 'text',
-        data: 'model',
+        data: 'platform',
         renderer: 'negativeValueRenderer'
     },
     {
-        title: 'Price',
-        type: 'numeric',
-        data: 'price',
-        numericFormat: {
-        pattern: '$ 0,0.00',
-        culture: 'en-US',
+        title: 'Row Labels',
+        type: 'text',
+        data: 'rowLabels',
+        renderer: 'negativeValueRenderer'
+    },
+    {
+        title: 'LU Line',
+        type: 'text',
+        data: 'luLine',
         renderer: 'priceRenderer'
-        },
     },
     {
-        title: 'Date',
-        type: 'date',
-        data: 'sellDate',
-        dateFormat: 'MMM D, YYYY',
-        correctFormat: true,
-        className: 'htRight',
+        title: 'Tool Qty',
+        type: 'numeric',
+        data: 'toolQty',
         renderer: 'negativeValueRenderer'
     },
     {
-        title: 'Time',
-        type: 'time',
-        data: 'sellTime',
-        timeFormat: 'hh:mm A',
-        correctFormat: true,
-        className: 'htRight',
+        title: 'Safety Stock',
+        type: 'numeric',
+        data: 'safetyStock',
         renderer: 'negativeValueRenderer'
     },
     {
-        title: 'In stock',
-        type: 'checkbox',
-        data: 'inStock',
+        title: '06/23/2022',
+        type: 'numeric',
+        data: 'c06232022',
+        className: 'htCenter',
+        renderer: 'negativeValueRenderer'
+    },
+    {
+        title: '06/24/2022',
+        type: 'numeric',
+        data: 'c06242022',
+        className: 'htCenter',
+        renderer: 'negativeValueRenderer'
+    },
+    {
+        title: '06/27/2022',
+        type: 'numeric',
+        data: 'c06272022',
+        className: 'htCenter',
+        renderer: 'negativeValueRenderer'
+    },
+    {
+        title: 'etc',
+        type: 'numeric',
+        data: 'etc',
         className: 'htCenter',
         renderer: 'negativeValueRenderer'
     },
