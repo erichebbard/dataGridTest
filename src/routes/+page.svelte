@@ -5,8 +5,12 @@
     export let data;
 
     console.log(data.grid);
+    console.log(data.columns);
+
+    let gridData = data.grid
+    let columns = data.columns
     
-    // let data = [
+    // let gridData = [
     //     {
     //         type: 'Sales Order Demand',
     //         platform: '737',
@@ -111,9 +115,9 @@
 
 </script>
 
-<!-- <span>Grid is here:</span>
-<Handsontable {data} {columns}/>
+<span>Grid is here:</span>
+<Handsontable {gridData} {columns}/>
 
 <br>
 <br>
-<div> production days that are producing over the tool capacity will be highlighted red </div> -->
+<div> production days that are producing over the tool capacity will be highlighted red </div>
