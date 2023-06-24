@@ -4,9 +4,9 @@
     import { onMount } from 'svelte';
     import '/node_modules/handsontable/dist/handsontable.full.min.css'
     
-    export let data;
+    export let gridData;
     export let columns;
-    console.log(data);
+    console.log(gridData);
     let isScriptLoaded = false;
     let isStyleLoaded = false;
     let isPageReady = false;
@@ -40,8 +40,8 @@
     function priceRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
         
-        let toolQuantity = data[row].toolQty;
-        console.log(toolQuantity);
+        let toolQuantity = gridData[row].ToolQty;
+        // console.log(toolQuantity);
         
         // if the row contains a negative number
         if (parseFloat(value, 10) > toolQuantity) {
@@ -85,7 +85,7 @@
         try {
 
             new Handsontable(node, {
-                data:data,
+                data:gridData,
                 columns:columns,
                 width: '100%',
                 height: 'auto',

@@ -26,6 +26,7 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/adapter-vercel": "^3.0.1",
-		"handsontable": "^12.4.0"
+		"handsontable": "^12.4.0",
+		"mssql": "^9.1.1"
 	}
 }
