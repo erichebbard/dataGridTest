@@ -30,6 +30,7 @@ export const GET = async () => {
                 PartNum: row.PartNum,
                 ToolNumber: "placeholder",
                 ToolQty: 2,
+                toolCapacity: 4,
                 SafetyStock: 20
             }
             mpsDataArray.push(newObj);

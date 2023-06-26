@@ -30,6 +30,12 @@ export const GET = async () => {
             renderer: 'negativeValueRenderer'
         },
         {
+            title: 'Tool Capacity',
+            type: 'numeric',
+            data: 'toolCapacity',
+            renderer: 'negativeValueRenderer'
+        },
+        {
             title: 'Safety Stock',
             type: 'numeric',
             data: 'SafetyStock',

@@ -42,11 +42,11 @@
     function priceRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
         
-        let toolQuantity = gridData[row].ToolQty;
+        let toolCapacity = gridData[row].toolCapacity;
         // console.log(toolQuantity);
         
         // if the row contains a negative number
-        if (parseFloat(value, 10) > toolQuantity) {
+        if (parseFloat(value, 10) > toolCapacity) {
 
             // add class 'make-me-red'
             td.style.background = 'red';
@@ -114,7 +114,7 @@
                     const cellProperties = {};
                     // const data = this.instance.getData(); // This makes it EXTREMELY slow... Hopefully we don't need to use it! 
 
-                    if (col > 4) {
+                    if (col > 5) {
                         cellProperties.renderer = 'priceRenderer'; // uses lookup map
                     }
                     return cellProperties;
