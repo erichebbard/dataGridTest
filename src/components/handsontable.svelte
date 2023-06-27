@@ -24,6 +24,8 @@
         })();
     });
 
+    let counter = 0;
+
  
 
     // falsy check before doing anything against potentially undefined Handsontable
@@ -40,11 +42,11 @@
     function priceRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
         
-        let toolQuantity = gridData[row].ToolQty;
+        let toolCapacity = gridData[row].toolCapacity;
         // console.log(toolQuantity);
         
         // if the row contains a negative number
-        if (parseFloat(value, 10) > toolQuantity) {
+        if (parseFloat(value, 10) > toolCapacity) {
 
             // add class 'make-me-red'
             td.style.background = 'red';
@@ -55,6 +57,17 @@
     
     function negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
+
+        // console.log("row is " + row)
+        // console.log("col is " + col)
+        // console.log("value is " + value)
+        // console.log(instance)
+        // console.log("prop is " + prop)
+
+        
+        // console.log("Counter is " + counter)
+        // counter++; 
+        
         
         if (!value || value === '') {
             td.style.background = '';
@@ -95,41 +108,50 @@
                 columnSorting: true,
                 filters: true,
                 dropdownMenu: true,
-                manualColumnResize: true,
+                // manualColumnResize: true,
                 licenseKey: "non-commercial-and-evaluation",
-    
-                afterSelection(row, col, row2, col2) {
-                    const meta = this.getCellMeta(row2, col2);
-    
-                    if (meta.readOnly) {
-                    this.updateSettings({fillHandle: false});
-    
-                    } else {
-                    this.updateSettings({fillHandle: true});
-                    }
-                },
                 cells(row, col) {
                     const cellProperties = {};
-                    const data = this.instance.getData();
-    
-                    if (row === 0 || data[row] && data[row][col] === 'readOnly') {
-                    cellProperties.readOnly = true; // make cell read-only if it is first row or the text reads 'readOnly'
-                    }
-    
-                    // if (row === 0) {
-                    // cellProperties.renderer = firstRowRenderer; // uses function directly
-    
-                    // }
-                    // } else {
-                    // cellProperties.renderer = 'priceRenderer'; // uses lookup map
-                    // }
-    
+                    // const data = this.instance.getData(); // This makes it EXTREMELY slow... Hopefully we don't need to use it! 
+
                     if (col > 5) {
-                        cellProperties.renderer = 'priceRenderer';
+                        cellProperties.renderer = 'priceRenderer'; // uses lookup map
                     }
-    
                     return cellProperties;
                 }
+    
+                // afterSelection(row, col, row2, col2) {
+                //     const meta = this.getCellMeta(row2, col2);
+    
+                //     if (meta.readOnly) {
+                //     this.updateSettings({fillHandle: false});
+    
+                //     } else {
+                //     this.updateSettings({fillHandle: true});
+                //     }
+                // },
+                // cells(row, col) {
+                //     const cellProperties = {};
+                //     const data = this.instance.getData();
+    
+                //     if (row === 0 || data[row] && data[row][col] === 'readOnly') {
+                //     cellProperties.readOnly = true; // make cell read-only if it is first row or the text reads 'readOnly'
+                //     }
+    
+                //     // if (row === 0) {
+                //     // cellProperties.renderer = firstRowRenderer; // uses function directly
+    
+                //     // }
+                //     // } else {
+                //     // cellProperties.renderer = 'priceRenderer'; // uses lookup map
+                //     // }
+    
+                //     if (col > 5) {
+                //         cellProperties.renderer = 'priceRenderer';
+                //     }
+    
+                //     return cellProperties;
+                // }
             });
 
         } catch (error) {
