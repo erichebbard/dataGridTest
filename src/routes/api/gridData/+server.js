@@ -20,25 +20,25 @@ export const GET = async () => {
 
         const PartNum = row.PartNum
 
-        const objIsFound = mpsDataArray.find(row => row.PartNum === PartNum);
+        const objIsFound = mpsDataArray.find(row => row.partNum === PartNum);
         
         // console.log(objIsFound !== undefined); // Output: true
 
-        if (objIsFound === undefined) { //initialize new object and push to array if not found
+        if (objIsFound === undefined) { //initialize new object and push object to array if not found
             const newObj = {
-                Platform: "placeholder",
-                PartNum: row.PartNum,
-                ToolNumber: "placeholder",
-                ToolQty: 2,
+                platform: "placeholder",
+                partNum: row.PartNum,
+                toolNumber: "placeholder",
+                toolQty: 2,
                 toolCapacity: 4,
-                SafetyStock: 20
+                safetyStock: 20
             }
             mpsDataArray.push(newObj);
         }
 
         // Find the object in the array... You could technically do this in the above if statement, but since it occurs 
         // only once every so many times, the increased performance outweighs the reduced readability.
-        const targetObject = mpsDataArray.find(row => row.PartNum === PartNum);
+        const targetObject = mpsDataArray.find(row => row.partNum === PartNum);
 
         if (targetObject) {
             targetObject[row.DueDate] = row.ProdQty;

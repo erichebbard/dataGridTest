@@ -42,7 +42,7 @@
     function priceRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
         
-        let toolCapacity = gridData[row].toolCapacity;
+        let toolCapacity = gridData[row];
         // console.log(toolQuantity);
         
         // if the row contains a negative number
