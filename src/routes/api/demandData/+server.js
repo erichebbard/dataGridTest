@@ -9,48 +9,48 @@ const poolConnect = pool.connect();
 
 export const GET = async () => {
     
-    const mpsData = await executeMPSQuery()
-    // const demandData = await executeDemandQuery()
+    const demandData = await executeMPSQuery()
 
-    let mpsDataArray = new Array();
+    let demandDataArray = new Array();
 
 
-    mpsData.forEach((row) => {
+    demandData.forEach((row) => {
         // console.log(row)
 
         const PartNum = row.PartNum
 
-        const objIsFound = mpsDataArray.find(row => row.partNum === PartNum);
+        const objIsFound = demandDataArray.find(row => row.partNum === PartNum);
         
         // console.log(objIsFound !== undefined); // Output: true
 
         if (objIsFound === undefined) { //initialize new object and push object to array if not found
             const newObj = {
-                platform: "placeholder",
-                partNum: row.PartNum,
-                toolNumber: "placeholder",
-                toolQty: 2,
+                platform: row.platform ?? 0,
+                partNum: row.PartNum ?? 0,
+                safetyStock: row.safetystock ?? 0,
+                toolNumber: row.tool ?? 0,
+                toolqty: row.toolqty ?? 0,
                 toolCapacity: 4,
-                safetyStock: 20
+                line: row.line ?? 0,
             }
-            mpsDataArray.push(newObj);
+            demandDataArray.push(newObj);
         }
 
         // Find the object in the array... You could technically do this in the above if statement, but since it occurs 
         // only once every so many times, the increased performance outweighs the reduced readability.
-        const targetObject = mpsDataArray.find(row => row.partNum === PartNum);
+        const targetObject = demandDataArray.find(row => row.partNum === PartNum);
 
         if (targetObject) {
-            targetObject[row.DueDate] = row.ProdQty;
+            targetObject[row.RequestDate] = row.OrderQty;
         }
 
         // console.log(targetObject)
 
     });
 
-    // console.log(mpsDataArray);
+    console.log(demandDataArray);
 
-    return json(mpsDataArray);
+    return json(demandDataArray);
     // json(demandData);
 }
 
@@ -59,15 +59,19 @@ async function executeMPSQuery() {
         await poolConnect; // Wait for the connection to be established
     
         const request = pool.request();
-        const query = `
+        const query = (`
         SELECT 
-        [Company], 
-        [PartNum], 
-        [Plant], 
-        CONVERT(varchar(10), [DueDate], 101) AS [DueDate],
-        [ProdQty]
-        FROM [dbo].[MPSSample]
-        `;
+        platform, 
+        PartNum, 
+        safetystock, 
+        tool, 
+        toolqty, 
+        line, 
+        CONVERT(varchar(10), [RequestDate], 101) AS [RequestDate],
+        [OrderQty]
+        FROM [dbo].mpsdemand mps
+      `);
+  
         const result = await request.query(query);
         
         // console.log(result.recordset); 

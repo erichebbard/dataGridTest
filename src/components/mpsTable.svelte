@@ -101,7 +101,7 @@
                 data:mpsData,
                 columns:columns,
                 width: '100%',
-                height: 'auto',
+                height: '200px',
                 colHeaders: true,
                 rowHeaders: false,
                 colWidths: 100,
