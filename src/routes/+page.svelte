@@ -7,10 +7,10 @@
     // console.log(data.grid);
     // console.log(data.columns);
 
-    let gridData = data.grid
+    let mpsData = data.mps
     let columns = data.columns
     
-    // let gridData = [
+    // let mpsData = [
     // {
     //     platform: 'placeholder',
     //     partNum: '416T2146-31',
@@ -1238,7 +1238,7 @@
 </script>
 
 <span>Grid is here:</span>
-<Handsontable {gridData} {columns}/>
+<Handsontable {mpsData} {columns}/>
 
 <br>
 <br>
