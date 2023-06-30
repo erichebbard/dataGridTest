@@ -26,12 +26,13 @@ export const GET = async () => {
 
         if (objIsFound === undefined) { //initialize new object and push object to array if not found
             const newObj = {
-                platform: "placeholder",
-                partNum: row.PartNum,
-                toolNumber: "placeholder",
-                toolQty: 2,
+                platform: row.platform ?? 0,
+                partNum: row.PartNum ?? 0,
+                safetyStock: row.safetystock ?? 0,
+                toolNumber: row.tool ?? 0,
+                toolQty: row.toolqty ?? 0,
                 toolCapacity: 4,
-                safetyStock: 20
+                line: row.line ?? 0,
             }
             mpsDataArray.push(newObj);
         }
@@ -61,12 +62,16 @@ async function executeMPSQuery() {
         const request = pool.request();
         const query = `
         SELECT 
-        [Company], 
-        [PartNum], 
-        [Plant], 
+        platform, 
+        mps.PartNum, 
+        safetystock, 
+        tool, 
+        toolqty, 
+        line, 
         CONVERT(varchar(10), [DueDate], 101) AS [DueDate],
         [ProdQty]
-        FROM [dbo].[MPSSample]
+        FROM [dbo].mpssample mps
+        LEFT JOIN MPSDetails Det ON Det.partnum = mps.PartNum
         `;
         const result = await request.query(query);
         

@@ -29,7 +29,7 @@ export const GET = async () => {
                 partNum: row.PartNum ?? 0,
                 safetyStock: row.safetystock ?? 0,
                 toolNumber: row.tool ?? 0,
-                toolqty: row.toolqty ?? 0,
+                toolQty: row.toolqty ?? 0,
                 toolCapacity: 4,
                 line: row.line ?? 0,
             }
