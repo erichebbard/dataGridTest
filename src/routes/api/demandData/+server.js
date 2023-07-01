@@ -50,6 +50,9 @@ export const GET = async () => {
 
     console.log(demandDataArray);
 
+    const summaryRow = {safetyStock: "Total"}
+    demandDataArray.push(summaryRow);
+
     return json(demandDataArray);
     // json(demandData);
 }

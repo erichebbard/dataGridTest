@@ -2053,8 +2053,14 @@ export const load = async ({ fetch }) => {
             '07/03/2024': 1,
             '07/11/2024': 1
         }
-        ];
-  
+    ];
+
+    const summaryRow1 = {safetyStock: "Total"}
+    fixedDemand.push(summaryRow1);
+
+    const summaryRow2 = {safetyStock: "Total"}
+    fixedMPS.push(summaryRow2);
+
     return {
         demand,
         mps,

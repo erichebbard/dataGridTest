@@ -50,6 +50,8 @@ export const GET = async () => {
     });
 
     // console.log(mpsDataArray);
+    const summaryRow = {safetyStock: "Total"}
+    mpsDataArray.push(summaryRow);
 
     return json(mpsDataArray);
     // json(demandData);

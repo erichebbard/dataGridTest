@@ -95,6 +95,7 @@
         Handsontable.renderers.registerRenderer('priceRenderer', priceRenderer);
 
         
+
         try {
 
             new Handsontable(node, {
@@ -117,7 +118,29 @@
                     if (col > 5) {
                         cellProperties.renderer = 'priceRenderer'; // uses lookup map
                     }
+                    
                     return cellProperties;
+                },
+
+                
+                // set the `columnSummary` configuration option to a function
+                columnSummary() {
+                    // initialize an array
+                    const configArray = [];
+
+                    for (let i = 6; i < this.hot.countCols(); i++) { // iterating over visible columns
+                        // for each visible column, add a column summary with a configuration
+                        configArray.push({
+                            sourceColumn: i,
+                            type: 'sum',
+                            reversedRowCoords: true,
+                            // display the column summary in the bottom row (because of the reversed row coordinates)
+                            destinationRow: 0,
+                            destinationColumn: i,
+                            forceNumeric: true
+                        });
+                    }
+                    return configArray;
                 }
     
                 // afterSelection(row, col, row2, col2) {
