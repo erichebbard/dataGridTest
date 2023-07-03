@@ -63,7 +63,7 @@ export const GET = async () => {
    
     };
 
-    console.log(dateArray);
+    // console.log(dateArray);
 
     return json(dateArray);
 }

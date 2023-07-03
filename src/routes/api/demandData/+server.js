@@ -48,7 +48,8 @@ export const GET = async () => {
 
     });
 
-    console.log(demandDataArray);
+    console.log("This is the demandDataArray \n\n", demandDataArray);
+    console.log("This is the end of the array")
 
     const summaryRow = {safetyStock: "Total"}
     demandDataArray.push(summaryRow);
