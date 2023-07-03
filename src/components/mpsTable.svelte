@@ -6,7 +6,8 @@
     
     export let mpsData;
     export let columns;
-    console.log(mpsData);
+    export let compareArray;
+    // console.log(mpsData);
     let isScriptLoaded = false;
     let isStyleLoaded = false;
     let isPageReady = false;
@@ -26,7 +27,7 @@
 
     let counter = 0;
 
- 
+    console.log("return array", compareArray);
 
     // falsy check before doing anything against potentially undefined Handsontable
     $: Handsontable && console.log(Handsontable);
@@ -42,7 +43,7 @@
     function priceRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
         
-        let toolCapacity = mpsData[row];
+        let toolCapacity = mpsData[row].toolCapacity;
         // console.log(toolQuantity);
         
         // if the row contains a negative number
@@ -84,6 +85,8 @@
     // maps function to a lookup string
     // Handsontable.renderers.registerRenderer('negativeValueRenderer', negativeValueRenderer);
     
+    let hotInstance;
+    
 	function gridInit(node) {
         
         console.log("Good!")
@@ -95,10 +98,10 @@
         Handsontable.renderers.registerRenderer('priceRenderer', priceRenderer);
 
         
-
+        // initialize the Handsontable instance
         try {
 
-            new Handsontable(node, {
+            hotInstance = new Handsontable(node, {
                 data:mpsData,
                 columns:columns,
                 width: '100%',
@@ -109,6 +112,7 @@
                 columnSorting: true,
                 filters: true,
                 dropdownMenu: true,
+                undo: true,
                 // manualColumnResize: true,
                 licenseKey: "non-commercial-and-evaluation",
                 cells(row, col) {
@@ -122,71 +126,71 @@
                     return cellProperties;
                 },
 
-                
-                // set the `columnSummary` configuration option to a function
-                columnSummary() {
-                    // initialize an array
-                    const configArray = [];
+                // ****************************** //
+                // This doesn't actually work so
+                // just wait until you figure it 
+                // out in the future
+                // ****************************** //
 
-                    for (let i = 6; i < this.hot.countCols(); i++) { // iterating over visible columns
-                        // for each visible column, add a column summary with a configuration
-                        configArray.push({
-                            sourceColumn: i,
-                            type: 'sum',
-                            reversedRowCoords: true,
-                            // display the column summary in the bottom row (because of the reversed row coordinates)
-                            destinationRow: 0,
-                            destinationColumn: i,
-                            forceNumeric: true
-                        });
-                    }
-                    return configArray;
-                }
-    
-                // afterSelection(row, col, row2, col2) {
-                //     const meta = this.getCellMeta(row2, col2);
-    
-                //     if (meta.readOnly) {
-                //     this.updateSettings({fillHandle: false});
-    
-                //     } else {
-                //     this.updateSettings({fillHandle: true});
+                // set the `columnSummary` configuration option to a function
+                // columnSummary() {
+                //     // initialize an array
+                //     const configArray = [];
+
+                //     for (let i = 6; i < this.hot.countCols(); i++) { // iterating over visible columns
+                //         // for each visible column, add a column summary with a configuration
+                //         configArray.push({
+                //             sourceColumn: i,
+                //             type: 'sum',
+                //             reversedRowCoords: true,
+                //             // display the column summary in the bottom row (because of the reversed row coordinates)
+                //             destinationRow: 0,
+                //             destinationColumn: i,
+                //             forceNumeric: true
+                //         });
                 //     }
-                // },
-                // cells(row, col) {
-                //     const cellProperties = {};
-                //     const data = this.instance.getData();
-    
-                //     if (row === 0 || data[row] && data[row][col] === 'readOnly') {
-                //     cellProperties.readOnly = true; // make cell read-only if it is first row or the text reads 'readOnly'
-                //     }
-    
-                //     // if (row === 0) {
-                //     // cellProperties.renderer = firstRowRenderer; // uses function directly
-    
-                //     // }
-                //     // } else {
-                //     // cellProperties.renderer = 'priceRenderer'; // uses lookup map
-                //     // }
-    
-                //     if (col > 5) {
-                //         cellProperties.renderer = 'priceRenderer';
-                //     }
-    
-                //     return cellProperties;
+                //     return configArray;
                 // }
             });
 
+            // console.log(node);
+            // console.log(hotInstance);
+            
         } catch (error) {
             console.log('Handsontable initialization error:', error);
         }
+
+        // console.log(hotInstance.getData());
+        
+        // now that the Handsontable is initialized, we can initialize the subcomponents 
+        // try {
+        //     undoRedo.enable();
+        // } catch (error) {
+        //     console.log('Handsontable initialization error:', error);
+        // }
+    }
+    
+    function handleUndo() {
+        hotInstance.undo();
     }
 
+    function handleRedo() {
+        hotInstance.redo();
+    }
+    
+    
+    
 </script>
 
 
 <!-- <div use:gridInit></div> -->
 
 {#if isPageReady}
-	<div use:gridInit></div>
+
+    <div>
+        <button on:click={handleUndo}>Undo</button>
+        <button on:click={handleRedo}>Redo</button>
+    </div>
+
+    <div use:gridInit></div>
 {/if}
