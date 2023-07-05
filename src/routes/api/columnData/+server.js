@@ -8,29 +8,29 @@ export const GET = async () => {
         {
             title: 'Platform',
             type: 'text',
-            data: 'Platform',
+            data: 'platform',
             renderer: 'negativeValueRenderer'
         },
         {
             title: 'Part Number',
             type: 'text',
-            data: 'PartNum',
+            data: 'partNum',
             renderer: 'negativeValueRenderer'
         },
         {
             title: 'Tool #',
             type: 'text',
-            data: 'ToolNumber',
+            data: 'toolNumber',
             renderer: 'priceRenderer'
         },
         {
             title: 'Tool Qty',
             type: 'numeric',
-            data: 'ToolQty',
+            data: 'toolQty',
             renderer: 'negativeValueRenderer'
         },
         {
-            title: 'Tool Capacity',
+            title: 'Total Capacity',
             type: 'numeric',
             data: 'toolCapacity',
             renderer: 'negativeValueRenderer'
@@ -38,7 +38,7 @@ export const GET = async () => {
         {
             title: 'Safety Stock',
             type: 'numeric',
-            data: 'SafetyStock',
+            data: 'safetyStock',
             renderer: 'negativeValueRenderer'
         }
     ];
@@ -63,7 +63,7 @@ export const GET = async () => {
    
     };
 
-    console.log(dateArray);
+    // console.log(dateArray);
 
     return json(dateArray);
 }
