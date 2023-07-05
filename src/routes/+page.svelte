@@ -15,10 +15,10 @@
 
     // let demandData = data.demand
     // let mpsData = data.mps
-    let columns = data.columns
+    let columns = data.columns;
 
-    let demandData = data.fixedDemand
-    let mpsData = data.fixedMPS
+    let demandData = data.demand;
+    let mpsData = data.mps;
 
     let isDemandTableInit = false;
     let isMpsTableInit = false;
