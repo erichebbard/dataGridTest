@@ -1,14 +1,16 @@
-
 <script>
 
     import { onMount } from 'svelte';
     import '/node_modules/handsontable/dist/handsontable.full.min.css'
     
-    export let mpsData;
+    export let data;
     export let columns;
     export let returnArray = [];
     export let compareArray;
-    // console.log(mpsData);
+    export let isReadOnly = false;
+    export let isFormatted; 
+    // export let isTableInit;
+    // console.log(data);
     let isScriptLoaded = false;
     let isStyleLoaded = false;
     let isPageReady = false;
@@ -27,15 +29,14 @@
     });
 
     let counter = 0;
-    let lastRow = mpsData.length-1;
+    let lastRow = data.length-1;
 
-    console.log("array length is", lastRow)
+    // console.log("array length is", lastRow)
 
-    console.log("return array", compareArray);
+    // console.log("return array", returnArray);
 
     // falsy check before doing anything against potentially undefined Handsontable
     $: Handsontable && console.log(Handsontable);
-    
     
     function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -49,14 +50,14 @@
 
         if (row < lastRow) { // handles the 'Total' row since it returns NULL values if it's empty
 
-            let toolCapacity = mpsData[row].toolCapacity ?? 0;
+            let toolCapacity = data[row].toolCapacity ?? 0;
             let totalProduction = value ?? 0;
             // console.log("row is " + row)
             // console.log("col is " + col)
             // console.log("value is " + totalProduction)
-            // console.log(mpsData[row].toolCapacity)
+            // console.log(data[row].toolCapacity)
             
-            // if the row contains a negative number
+            // if production is above capacity
             if (totalProduction > toolCapacity) {
     
                 // add class 'make-me-red'
@@ -103,13 +104,14 @@
         // move the registration of the custom renderer inside the gridInit function, which will ensure it is executed in the browser environment. 
         Handsontable.renderers.registerRenderer('negativeValueRenderer', negativeValueRenderer);
         Handsontable.renderers.registerRenderer('priceRenderer', priceRenderer);
+																						 
 
         
         // initialize the Handsontable instance
         try {
 
             hotInstance = new Handsontable(node, {
-                data:mpsData,
+                data:data,
                 columns:columns,
                 width: '100%',
                 height: '200px',
@@ -120,13 +122,15 @@
                 filters: true,
                 dropdownMenu: true,
                 undo: true,
+                readOnly: false,
                 // manualColumnResize: true,
                 licenseKey: "non-commercial-and-evaluation",
                 cells(row, col) {
                     const cellProperties = {};
                     // const data = this.instance.getData(); // This makes it EXTREMELY slow... Hopefully we don't need to use it! 
-
-                    if (col > 5 && row < lastRow) {
+                    
+                    // make sure isReadOnly false so that it doesn't start formatting the MPS table
+                    if (col > 5) {
                         cellProperties.renderer = 'priceRenderer'; // uses lookup map
                     }
                     
@@ -140,32 +144,35 @@
                 // ****************************** //
 
                 // set the `columnSummary` configuration option to a function
-                // columnSummary() {
-                //     // initialize an array
-                //     const configArray = [];
+                columnSummary() {
+                    // initialize an array
+                    const configArray = [];
 
-                //     for (let i = 6; i < this.hot.countCols(); i++) { // iterating over visible columns
-                //         // for each visible column, add a column summary with a configuration
-                //         configArray.push({
-                //             sourceColumn: i,
-                //             type: 'sum',
-                //             reversedRowCoords: true,
-                //             // display the column summary in the bottom row (because of the reversed row coordinates)
-                //             destinationRow: 0,
-                //             destinationColumn: i,
-                //             forceNumeric: true
-                //         });
-                //     }
-                //     return configArray;
-                // }
+                    for (let i = 6; i < this.hot.countCols(); i++) { // iterating over visible columns
+                        // for each visible column, add a column summary with a configuration
+                        configArray.push({
+                            sourceColumn: i,
+                            type: 'sum',
+                            reversedRowCoords: true,
+                            // display the column summary in the bottom row (because of the reversed row coordinates)
+                            destinationRow: 0,
+                            destinationColumn: i,
+                            forceNumeric: true
+                        });
+                    }
+                    return configArray;
+                }
             });
 
             // console.log(node);
             // console.log(hotInstance);
-            
+
         } catch (error) {
             console.log('Handsontable initialization error:', error);
         }
+
+		bind:returnArray = hotInstance.getData();
+
     }
     
     function handleUndo() {
