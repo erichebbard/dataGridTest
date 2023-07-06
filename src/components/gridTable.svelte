@@ -6,9 +6,9 @@
     export let data;
     export let columns;
     export let returnArray = [];
-    export let compareArray;
-    export let isReadOnly = false;
-    export let isFormatted; 
+    export const compareArray = [];
+    export const isReadOnly = false;
+    export const isFormatted = true; 
     // export let isTableInit;
     // console.log(data);
     let isScriptLoaded = false;

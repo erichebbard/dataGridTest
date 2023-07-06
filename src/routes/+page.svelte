@@ -19,9 +19,7 @@
 
     let demandData = data.demand;
     let mpsData = data.mps;
-
-    let isDemandTableInit = false;
-    let isMpsTableInit = false;
+    let filterData = data.filter;
 
     // the below needs to be reactive since it gets initialized once then won't get initialized again
     // until there is a change to the array... I've also tested this, and the array will only get 
@@ -29,6 +27,8 @@
     // won't pass a partially complete array
     $: isDemandTableInit = salesOrderReturnArray.length > 0
     $: isMpsTableInit = mpsReturnArray.length > 0
+
+
     
 </script>
 
