@@ -3,6 +3,7 @@
 	import MpsTable from '/src/components/mpsTable.svelte'
     import DemandTable from '/src/components/demandTable.svelte'
     import GridTable from '/src/components/gridTable.svelte'
+    import UploadMpsButton from '/src/components/uploadMpsButton.svelte';
 
     export let data;
 
@@ -32,6 +33,8 @@
     $: isDemandTableInit = salesOrderReturnArray.length > 0
     $: isMpsTableInit = mpsReturnArray.length > 0
 
+
+
     function handleFilter() {
         soFilterPlugin.addCondition(1, 'eq', ['5A3223-4']);;
         soFilterPlugin.filter();
@@ -46,16 +49,21 @@
 </script>
 
 {#if isDemandTableInit && isMpsTableInit} 
+    <UploadMpsButton/>
     <div> Both tables loaded successfully!</div>>
 {/if}
 
-<span>Grid is here:</span>
-<GridTable data={demandData} {columns} bind:filtersPlugin={soFilterPlugin} bind:returnArray={salesOrderReturnArray} compareArray={salesOrderReturnArray} isReadOnly=true/>
+<div class='py-10 px-10'>
+    <GridTable data={demandData} {columns} bind:filtersPlugin={soFilterPlugin} bind:returnArray={salesOrderReturnArray} compareArray={[]} isReadOnly=true/>
+</div>
 
-<!-- make sure that the sales order grid is initialized first, so that you can actually get the return array -->
-{#if isDemandTableInit} 
-    <GridTable data={mpsData} {columns} bind:filtersPlugin={mpsFilterPlugin} bind:returnArray={mpsReturnArray} compareArray={salesOrderReturnArray} isReadOnly=false/>
-{/if}
+<div class='py-10 px-10'>
+    <!-- make sure that the sales order grid is initialized first, so that you can actually get the return array -->
+    {#if isDemandTableInit} 
+        <GridTable data={mpsData} {columns} bind:filtersPlugin={mpsFilterPlugin} bind:returnArray={mpsReturnArray} compareArray={salesOrderReturnArray} isReadOnly=false/>
+    {/if}
+</div>
+
 
 <div>
     <button on:click={handleFilter}>Filter</button>
