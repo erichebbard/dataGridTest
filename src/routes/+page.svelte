@@ -4,6 +4,7 @@
     import DemandTable from '/src/components/demandTable.svelte'
     import GridTable from '/src/components/gridTable.svelte'
     import UploadMpsButton from '/src/components/uploadMpsButton.svelte';
+    import FilterListbox from '/src/components/filterListbox.svelte';
 
     export let data;
 
@@ -44,12 +45,16 @@
 
     }
 
-
-    
 </script>
 
 {#if isDemandTableInit && isMpsTableInit} 
     <UploadMpsButton/>
+    <div class='py-5 px-10 flex-3 flex-col columns-3'>
+        <FilterListbox/>
+        <FilterListbox/>
+        <FilterListbox/>
+
+    </div>
     <div> Both tables loaded successfully!</div>>
 {/if}
 
