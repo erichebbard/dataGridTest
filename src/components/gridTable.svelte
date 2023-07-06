@@ -6,6 +6,8 @@
     export let data;
     export let columns;
     export let returnArray = [];
+    export let filtersPlugin;
+    export let hotInstance;
     export const compareArray = [];
     export const isReadOnly = false;
     export const isFormatted = true; 
@@ -95,7 +97,7 @@
     // maps function to a lookup string
     // Handsontable.renderers.registerRenderer('negativeValueRenderer', negativeValueRenderer);
     
-    let hotInstance;
+    
     
 	function gridInit(node) {
         
@@ -110,7 +112,7 @@
         // initialize the Handsontable instance
         try {
 
-            hotInstance = new Handsontable(node, {
+            bind:hotInstance = new Handsontable(node, {
                 data:data,
                 columns:columns,
                 width: '100%',
@@ -163,6 +165,9 @@
                     return configArray;
                 }
             });
+
+            bind:filtersPlugin = hotInstance.getPlugin('filters');
+            // console.log(filtersPlugin);
 
             // console.log(node);
             // console.log(hotInstance);

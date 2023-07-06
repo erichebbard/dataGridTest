@@ -8,13 +8,13 @@ export const load = async ({ fetch }) => {
     const responseCol = await fetch(`/api/columnData`)
     const columns = await responseCol.json()
 
-    const filter = mps.map(obj => [
-      obj.platform,
-      obj.line,
-      obj.partNum,
-    ]);
+    // const filter = mps.map(obj => [
+    //   obj.platform,
+    //   obj.line,
+    //   obj.partNum,
+    // ]);
 
-    console.log(filter);
+    // console.log(filter);
 
     let fixedDemand = [
         {
@@ -3179,19 +3179,34 @@ export const load = async ({ fetch }) => {
           }
         ];
         
-        const summaryRow1 = {safetyStock: "Total"}
-        fixedDemand.push(summaryRow1);
-        
-        const summaryRow2 = {safetyStock: "Total"}
-        fixedMPS.push(summaryRow2);
-        
+    
+    let fixedFilter = [
+      [ 1, 1, '416T2146-31' ],
+      [ 0, 0, '416T2155-1' ],
+      [ 1, 0, '416T2155-2' ],
+      [ 0, 0, '416U6030-13' ],
+      [ 0, 0, '416U6030-14' ],
+      [ 1, 1, '416U6030-15' ],
+      [ 0, 0, '416U6030-16' ],
+      [ 1, 1, '5A3223-3' ],
+      [ 0, 1, '5A3223-4' ],
+      [ 0, 1, '5A3289-19' ],
+      [ 1, 0, '65B57619-35' ]
+    ];
+
+    const summaryRow1 = {safetyStock: "Total"}
+    fixedDemand.push(summaryRow1);
+    
+    const summaryRow2 = {safetyStock: "Total"}
+    fixedMPS.push(summaryRow2);
 
     return {
         demand,
         mps,
         columns,
-        filter,
+        // filter,
         fixedDemand,
-        fixedMPS
+        fixedMPS,
+        fixedFilter
     };
 }

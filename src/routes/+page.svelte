@@ -9,6 +9,9 @@
     let salesOrderReturnArray = [];
     let mpsReturnArray = [];
 
+    let soFilterPlugin;
+    let mpsFilterPlugin;
+
     // console.log(data.grid);
     // console.log(data.columns);
     // console.log(data.demand);
@@ -16,10 +19,11 @@
     // let demandData = data.demand
     // let mpsData = data.mps
     let columns = data.columns;
+    // let filterData = data.filter;
 
-    let demandData = data.demand;
-    let mpsData = data.mps;
-    let filterData = data.filter;
+    let demandData = data.fixedDemand;
+    let mpsData = data.fixedMPS;
+    let filterData = data.fixedFilter;
 
     // the below needs to be reactive since it gets initialized once then won't get initialized again
     // until there is a change to the array... I've also tested this, and the array will only get 
@@ -27,6 +31,15 @@
     // won't pass a partially complete array
     $: isDemandTableInit = salesOrderReturnArray.length > 0
     $: isMpsTableInit = mpsReturnArray.length > 0
+
+    function handleFilter() {
+        soFilterPlugin.addCondition(1, 'eq', ['5A3223-4']);;
+        soFilterPlugin.filter();
+
+        mpsFilterPlugin.addCondition(1, 'eq', ['5A3223-4']);;
+        mpsFilterPlugin.filter();
+
+    }
 
 
     
@@ -37,13 +50,17 @@
 {/if}
 
 <span>Grid is here:</span>
-<GridTable data={demandData} {columns} bind:returnArray={salesOrderReturnArray} compareArray={salesOrderReturnArray} isReadOnly=true/>
+<GridTable data={demandData} {columns} bind:filtersPlugin={soFilterPlugin} bind:returnArray={salesOrderReturnArray} compareArray={salesOrderReturnArray} isReadOnly=true/>
 
 <!-- make sure that the sales order grid is initialized first, so that you can actually get the return array -->
 {#if isDemandTableInit} 
-    <GridTable data={mpsData} {columns} bind:returnArray={mpsReturnArray} compareArray={salesOrderReturnArray} isReadOnly=false/>
+    <GridTable data={mpsData} {columns} bind:filtersPlugin={mpsFilterPlugin} bind:returnArray={mpsReturnArray} compareArray={salesOrderReturnArray} isReadOnly=false/>
 {/if}
 
+<div>
+    <button on:click={handleFilter}>Filter</button>
+    <button on:click={handleFilter}>Unfilter</button>
+</div>
 
 <div></div>
 
