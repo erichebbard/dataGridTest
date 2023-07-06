@@ -7,10 +7,12 @@
     export let columns;
     export let returnArray = [];
     export let filtersPlugin;
-    export let hotInstance;
-    export const compareArray = [];
-    export const isReadOnly = false;
-    export const isFormatted = true; 
+    let hotInstance; // binded
+    // export let compareArray = [];
+    // export let isReadOnly = false;
+    // export let isFormatted = true; 
+    
+    
     // export let isTableInit;
     // console.log(data);
     let isScriptLoaded = false;
