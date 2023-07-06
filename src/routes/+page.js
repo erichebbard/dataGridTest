@@ -8,6 +8,13 @@ export const load = async ({ fetch }) => {
     const responseCol = await fetch(`/api/columnData`)
     const columns = await responseCol.json()
 
+    const filter = mps.map(obj => [
+      obj.platform,
+      obj.line,
+      obj.partNum,
+    ]);
+
+    console.log(filter);
 
     let fixedDemand = [
         {
@@ -1947,7 +1954,7 @@ export const load = async ({ fetch }) => {
           '12/21/2023': 405
         }];
     
-        let fixedMPS = [
+    let fixedMPS = [
         {
             platform: 'placeholder',
             partNum: '416T2146-31',
@@ -3169,19 +3176,21 @@ export const load = async ({ fetch }) => {
             '06/27/2024': 1,
             '07/03/2024': 1,
             '07/11/2024': 1
-        }
-    ];
-
-    const summaryRow1 = {safetyStock: "Total"}
-    fixedDemand.push(summaryRow1);
-
-    const summaryRow2 = {safetyStock: "Total"}
-    fixedMPS.push(summaryRow2);
+          }
+        ];
+        
+        const summaryRow1 = {safetyStock: "Total"}
+        fixedDemand.push(summaryRow1);
+        
+        const summaryRow2 = {safetyStock: "Total"}
+        fixedMPS.push(summaryRow2);
+        
 
     return {
         demand,
         mps,
         columns,
+        filter,
         fixedDemand,
         fixedMPS
     };

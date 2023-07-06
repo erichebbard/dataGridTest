@@ -3,6 +3,7 @@
 import sql from 'mssql'; 
 import { sqlConfig } from '../../../lib/utils/db';
 import { json } from '@sveltejs/kit'
+import { randomInt } from 'crypto';
 
 const pool = new sql.ConnectionPool(sqlConfig);
 const poolConnect = pool.connect();
@@ -26,13 +27,13 @@ export const GET = async () => {
 
         if (objIsFound === undefined) { //initialize new object and push object to array if not found
             const newObj = {
-                platform: row.platform ?? 0,
+                platform: row.platform ?? randomInt(2),
                 partNum: row.PartNum ?? 0,
                 safetyStock: row.safetystock ?? 0,
                 toolNumber: row.tool ?? 0,
                 toolQty: row.toolqty ?? 0,
                 toolCapacity: 4,
-                line: row.line ?? 0,
+                line: row.line ?? randomInt(2),
             }
             mpsDataArray.push(newObj);
         }
