@@ -48,16 +48,17 @@ export const GET = async () => {
         let nextDate = new Date(currentDate);  // Create a new date object based on the current date
         nextDate.setDate(currentDate.getDate() + i);  // Increment the date by i days
 
-        // Format the date as 'mm/dd/yyyy'
+        // Format the date as 'mm/dd/yyyy /n Weekday'
         let formattedDate = `<span>${(nextDate.getMonth() + 1).toString().padStart(2, '0')}/${nextDate.getDate().toString().padStart(2, '0')}/${nextDate.getFullYear()}<br/>(${getDayOfWeek(nextDate)})</span>`;
 
-        console.log(formattedDate);
-
+        // Format the date as 'mm/dd/yyyy'
+        let dataformattedDate = `${(nextDate.getMonth() + 1).toString().padStart(2, '0')}/${nextDate.getDate().toString().padStart(2, '0')}/${nextDate.getFullYear()}`;
+        
         // Create the object with the date
         let dateObject = {
             title: formattedDate,
             type: 'numeric',
-            data: formattedDate,
+            data: dataformattedDate,
             className: 'htCenter',
             renderer: 'negativeValueRenderer'
         }
