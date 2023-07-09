@@ -1,4 +1,5 @@
 import { json } from '@sveltejs/kit'
+import { formatPostcssSourceMap } from 'vite';
 
 export const GET = async () => {
     
@@ -48,7 +49,9 @@ export const GET = async () => {
         nextDate.setDate(currentDate.getDate() + i);  // Increment the date by i days
 
         // Format the date as 'mm/dd/yyyy'
-        let formattedDate = `${(nextDate.getMonth() + 1).toString().padStart(2, '0')}/${nextDate.getDate().toString().padStart(2, '0')}/${nextDate.getFullYear()}`;
+        let formattedDate = `<span>${(nextDate.getMonth() + 1).toString().padStart(2, '0')}/${nextDate.getDate().toString().padStart(2, '0')}/${nextDate.getFullYear()}<br/>(${getDayOfWeek(nextDate)})</span>`;
+
+        console.log(formattedDate);
 
         // Create the object with the date
         let dateObject = {
@@ -57,7 +60,7 @@ export const GET = async () => {
             data: formattedDate,
             className: 'htCenter',
             renderer: 'negativeValueRenderer'
-        }   
+        }
         
         dateArray.push(dateObject);  // Add the object to the array
    
@@ -67,3 +70,10 @@ export const GET = async () => {
 
     return json(dateArray);
 }
+
+// Function to get the day of the week
+function getDayOfWeek(date) {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return daysOfWeek[date.getDay()];
+  }
+  
