@@ -11,10 +11,10 @@ export const load = async ({ fetch }) => {
     const responseExceptions = await fetch(`/api/exceptionsData`)
     const exceptions = await responseExceptions.json()
 
-    const exceptionColumns = exceptions.map(value => {
-      const matchingIndex = columns.findIndex(obj => obj.title.includes(value));
-      return matchingIndex !== -1 ? matchingIndex : null;
-    }).filter(index => index !== null);
+    // const exceptionColumns = exceptions.map(value => {
+    //   const matchingIndex = columns.findIndex(obj => obj.title.includes(value));
+    //   return matchingIndex !== -1 ? matchingIndex : null;
+    // }).filter(index => index !== null);
     
     // console.log(exceptionColumns);
     
@@ -3204,6 +3204,12 @@ export const load = async ({ fetch }) => {
       [ 1, 0, '65B57619-35' ]
     ];
 
+    let fixedExceptions = [
+      143, 174, 62,
+      176, 177, 178,
+      142
+    ];
+
     const summaryRow1 = {safetyStock: "Total"}
     fixedDemand.push(summaryRow1);
     
@@ -3215,9 +3221,10 @@ export const load = async ({ fetch }) => {
         mps,
         columns,
         // filter,
-        exceptionColumns,
+        // exceptionColumns,
         fixedDemand,
         fixedMPS,
-        fixedFilter
+        fixedFilter,
+        fixedExceptions
     };
 }

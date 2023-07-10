@@ -22,7 +22,8 @@
     // let mpsData = data.mps
     let columns = data.columns;
     // let filterData = data.filter;
-    let exceptionColumns = data.exceptionColumns;
+    // let exceptionColumns = data.exceptionColumns;
+    let exceptionColumns = data.fixedExceptions;
 
     let demandData = data.fixedDemand;
     let mpsData = data.fixedMPS;
