@@ -60,7 +60,7 @@
                     },
                 },
                 top: {
-                    width: 6,
+                    width: 5,
                     color: '#5292F7',
                 },
                 bottom: {
