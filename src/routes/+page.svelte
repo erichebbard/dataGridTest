@@ -22,6 +22,7 @@
     // let mpsData = data.mps
     let columns = data.columns;
     // let filterData = data.filter;
+    let exceptionColumns = data.exceptionColumns;
 
     let demandData = data.fixedDemand;
     let mpsData = data.fixedMPS;
@@ -33,8 +34,6 @@
     // won't pass a partially complete array
     $: isDemandTableInit = salesOrderReturnArray.length > 0
     $: isMpsTableInit = mpsReturnArray.length > 0
-
-
 
     function handleFilter() {
         soFilterPlugin.addCondition(1, 'eq', ['5A3223-4']);;
@@ -59,13 +58,13 @@
 {/if}
 
 <div class='py-10 px-10'>
-    <GridTable data={demandData} {columns} bind:filtersPlugin={soFilterPlugin} bind:returnArray={salesOrderReturnArray} compareArray={[]} isReadOnly=true/>
+    <GridTable data={demandData} {columns} bind:filtersPlugin={soFilterPlugin} bind:returnArray={salesOrderReturnArray} compareArray={[]} isReadOnly=true exceptionColumns={exceptionColumns} />
 </div>
 
 <div class='py-10 px-10'>
     <!-- make sure that the sales order grid is initialized first, so that you can actually get the return array -->
     {#if isDemandTableInit} 
-        <GridTable data={mpsData} {columns} bind:filtersPlugin={mpsFilterPlugin} bind:returnArray={mpsReturnArray} compareArray={salesOrderReturnArray} isReadOnly=false/>
+        <GridTable data={mpsData} {columns} bind:filtersPlugin={mpsFilterPlugin} bind:returnArray={mpsReturnArray} compareArray={salesOrderReturnArray} isReadOnly=false exceptionColumns={exceptionColumns} />
     {/if}
 </div>
 

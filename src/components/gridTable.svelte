@@ -6,6 +6,7 @@
     export let data;
     export let columns;
     export let returnArray = [];
+    export let exceptionColumns = [];
     export let filtersPlugin;
     let hotInstance; // binded
     // export let compareArray = [];
@@ -35,9 +36,47 @@
     let counter = 0;
     let lastRow = data.length-1;
 
-    // console.log("array length is", lastRow)
 
-    // console.log("return array", returnArray);
+    // *******************************************
+    // Initializing the array to highlight
+    // non-working days... The border was my 
+    // best option since I wouldn't have to 
+    // deal with the conditional formatting
+    // *******************************************
+    const borderArray = [];
+
+    for (let i = 0; i < exceptionColumns.length; i++) {
+        const value = exceptionColumns[i];
+
+        borderArray.push({
+                range: {
+                    from: {
+                        row: 0,
+                        col: value+1,
+                    },
+                    to: {
+                        row: lastRow,
+                        col: value+1,
+                    },
+                },
+                top: {
+                    width: 6,
+                    color: '#5292F7',
+                },
+                bottom: {
+                    width: 2,
+                    color: '#5292F7',
+                },
+                start: {
+                    width: 2,
+                    color: '#5292F7',
+                },
+                end: {
+                    width: 2,
+                    color: '#5292F7',
+                },
+            });
+    };
 
     // falsy check before doing anything against potentially undefined Handsontable
     $: Handsontable && console.log(Handsontable);
@@ -119,6 +158,7 @@
                 columns:columns,
                 width: '100%',
                 height: '200px',
+                className: 'custom-table',
                 colHeaders: true,
                 rowHeaders: false,
                 colWidths: 100,
@@ -140,14 +180,9 @@
                     
                     return cellProperties;
                 },
+                customBorders: borderArray,
 
-                // ****************************** //
-                // This doesn't actually work so
-                // just wait until you figure it 
-                // out in the future
-                // ****************************** //
-
-                // set the `columnSummary` configuration option to a function
+                // this currently breaks the undo functionality but lets keep using it for now
                 columnSummary() {
                     // initialize an array
                     const configArray = [];
@@ -165,7 +200,8 @@
                         });
                     }
                     return configArray;
-                }
+                },
+                
             });
 
             bind:filtersPlugin = hotInstance.getPlugin('filters');

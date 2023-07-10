@@ -8,6 +8,16 @@ export const load = async ({ fetch }) => {
     const responseCol = await fetch(`/api/columnData`)
     const columns = await responseCol.json()
 
+    const responseExceptions = await fetch(`/api/exceptionsData`)
+    const exceptions = await responseExceptions.json()
+
+    const exceptionColumns = exceptions.map(value => {
+      const matchingIndex = columns.findIndex(obj => obj.title.includes(value));
+      return matchingIndex !== -1 ? matchingIndex : null;
+    }).filter(index => index !== null);
+    
+    // console.log(exceptionColumns);
+    
     // const filter = mps.map(obj => [
     //   obj.platform,
     //   obj.line,
@@ -3205,6 +3215,7 @@ export const load = async ({ fetch }) => {
         mps,
         columns,
         // filter,
+        exceptionColumns,
         fixedDemand,
         fixedMPS,
         fixedFilter
