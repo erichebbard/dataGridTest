@@ -5,6 +5,7 @@
     import GridTable from '/src/components/gridTable.svelte'
     import UploadMpsButton from '/src/components/uploadMpsButton.svelte';
     import FilterListbox from '/src/components/filterListbox.svelte';
+    import DropdownFilter from '/src/components/dropdownFilter.svelte';
 
     export let data;
 
@@ -29,6 +30,9 @@
     let mpsData = data.fixedMPS;
     let filterData = data.fixedFilter;
 
+    let selectedOptions = [];
+
+
     // the below needs to be reactive since it gets initialized once then won't get initialized again
     // until there is a change to the array... I've also tested this, and the array will only get 
     // initialized **once** at the end of the gridInit() function, therefore the isDemandTableInit value
@@ -36,12 +40,36 @@
     $: isDemandTableInit = salesOrderReturnArray.length > 0
     $: isMpsTableInit = mpsReturnArray.length > 0
 
-    function handleFilter() {
-        soFilterPlugin.addCondition(1, 'eq', ['5A3223-4']);;
-        soFilterPlugin.filter();
 
-        mpsFilterPlugin.addCondition(1, 'eq', ['5A3223-4']);;
-        mpsFilterPlugin.filter();
+
+    function handlePlatformSelection(event) {
+        selectedOptions = event.detail;
+
+        console.log("Platform", selectedOptions);
+
+        // soFilterPlugin.addCondition(1, 'by_value', filterList);;
+        // soFilterPlugin.filter();
+    }
+
+    function handleToolSelection(event) {
+        selectedOptions = event.detail;
+
+        console.log("Tool", selectedOptions);
+        // soFilterPlugin.addCondition(1, 'by_value', filterList);;
+        // soFilterPlugin.filter();
+    }
+
+    
+
+    function handlePlatformFilter() {
+        
+        // const filterList = [['5A3223-4', '416T2155-2', '416U6030-14']]; // move this to function inputs when you are ready
+
+        // soFilterPlugin.addCondition(1, 'by_value', filterList);;
+        // soFilterPlugin.filter();
+
+        // mpsFilterPlugin.addCondition(1, 'by_value', filterList);;
+        // mpsFilterPlugin.filter();
 
     }
 
@@ -50,12 +78,17 @@
 {#if isDemandTableInit && isMpsTableInit} 
     <UploadMpsButton/>
     <div class='py-5 px-10 flex-3 flex-col columns-3'>
+        <!-- <FilterListbox/>
         <FilterListbox/>
-        <FilterListbox/>
-        <FilterListbox/>
+        <FilterListbox/> -->
+        
+        <DropdownFilter on:selection={handlePlatformSelection} title='Filter By Platform'/>
+        <DropdownFilter on:selection={handleToolSelection} title='Filter By Tool'/>
+
+        <p>Selected options: {selectedOptions.join(', ')}</p>
 
     </div>
-    <div> Both tables loaded successfully!</div>>
+    <div> Both tables loaded successfully!</div>
 {/if}
 
 <div class='py-10 px-10'>
@@ -70,12 +103,10 @@
 </div>
 
 
-<div>
+<!-- <div>
     <button on:click={handleFilter}>Filter</button>
     <button on:click={handleFilter}>Unfilter</button>
-</div>
-
-<div></div>
+</div> -->
 
 <br>
 <br>

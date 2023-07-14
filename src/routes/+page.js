@@ -21,7 +21,6 @@ export const load = async ({ fetch }) => {
     // const filter = mps.map(obj => [
     //   obj.platform,
     //   obj.line,
-    //   obj.partNum,
     // ]);
 
     // console.log(filter);
@@ -3190,18 +3189,16 @@ export const load = async ({ fetch }) => {
         ];
         
     
-    let fixedFilter = [
-      [ 1, 1, '416T2146-31' ],
-      [ 0, 0, '416T2155-1' ],
-      [ 1, 0, '416T2155-2' ],
-      [ 0, 0, '416U6030-13' ],
-      [ 0, 0, '416U6030-14' ],
-      [ 1, 1, '416U6030-15' ],
-      [ 0, 0, '416U6030-16' ],
-      [ 1, 1, '5A3223-3' ],
-      [ 0, 1, '5A3223-4' ],
-      [ 0, 1, '5A3289-19' ],
-      [ 1, 0, '65B57619-35' ]
+    let fixedFilter  = [
+      [ '737', 'MOLD65C33530-11'],
+      [ '737', 'MOLD65C33530-12' ],
+      [ '737', 'MOLD65C33530-13' ],
+      [ '737', 'MOLD65C33530-14' ],
+      [ '641', 'MOLD65C33530-12' ],
+      [ '641', 'MOLD65C33530-21' ],
+      [ '641', 'MOLD65C33530-22' ],
+      [ '641', 'MOLD65C33530-23' ],
+      [ '641', 'MOLD65C33530-24' ],
     ];
 
     let fixedExceptions = [
